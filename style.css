@@ -1,0 +1,136 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --black: #121212;
+    --white: #d0ccff;
+    --red: #ff8183;
+    --blue: #55a0e5;
+    --brown: #b65f00;
+    --gray: #232329;
+}
+
+#viewport {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--black);
+}
+
+#calculator {
+    border: 3px solid var(--white);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    padding: 16px;
+    gap: 24px;
+}
+
+/* Style for when the width is greater than height */
+@media (min-aspect-ratio: 1/1) {
+    #calculator {
+        height: 500px;
+        width: 350px;
+    }
+}
+
+/* Styles for when the height is greater than width */
+@media (max-aspect-ratio: 1/1) {
+    #calculator {
+        height: 65vh;
+        width: 75vw;
+    }
+}
+
+#screen {
+    flex: 3.5 1 auto;
+    border: 2px solid var(--brown);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.screen-section {
+    flex: 1 1 auto;
+}
+
+#input {
+    border-bottom: 1px solid var(--gray);
+}
+
+#results {
+    border-top: 1px solid var(--gray);
+}
+
+#buttons {
+    flex: 6.5 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.row {
+    height: 17%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.wide,
+.square,
+.circle {
+    background-color: var(--black);
+}
+
+.wide,
+.square {
+    border-radius: 12px;
+}
+
+.square,
+.circle {
+    width: 22%;
+}
+
+.wide {
+    width: 35%;
+}
+
+.circle {
+    border-radius: 35%;
+}
+
+.number,
+.operator,
+.utility {
+    font-size: 150%;
+    border: 2px solid;
+}
+
+.number {
+    border-color: var(--white);
+    color: var(--white);
+}
+
+.operator {
+    border-color: var(--blue);
+    color: var(--blue);
+}
+
+.utility {
+    border-color: var(--red);
+    color: var(--red);
+}
+
+#calculate-btn {
+    border-color: var(--brown);
+    color: var(--brown);
+}
