@@ -32,9 +32,14 @@ backspaceBtn.addEventListener('click', () => {
 
 calculateBtn.addEventListener('click', () => {
     const input = inputSection.textContent;
-    if (input === '') return;
+    if (!input) return;
 
     const tokens = parse(input);
+    if (!tokens) {
+        resultSection.textContent = 'ERROR';
+        return;
+    }
+
     const result = evaluate(tokens);
     const resultRounded = Math.round(result * 100) / 100;
     resultSection.textContent = `= ${resultRounded}`;
@@ -44,47 +49,56 @@ function parse(input) {
     const splitInput = input.split(/\s+/);
 
     const tokens = [];
-    let index = 0;
-    let isAtEnd = false;
-    const seek = () => {
-        if (index >= splitInput.length - 1) {
-            isAtEnd = true;
-            // indicate end of splitInput array
-            return false;
+    let i = 0;
+
+    while (i < splitInput.length) {
+        const current = splitInput[i];
+        const next = splitInput[i + 1];
+        const nextNext = splitInput[i + 2];
+
+        if (isNumeric(current)) {
+            tokens.push(+current);
+        } else if (isOperator(current) && isNumeric(next)) {
+            tokens.push(current);
+            tokens.push(+next);
+            i++;
+        } else if (
+            isOperator(current) &&
+            isMinusSign(next) &&
+            isNumeric(nextNext)
+        ) {
+            tokens.push(current);
+            tokens.push(-nextNext);
+            i++;
+            i++;
+        } else {
+            return NaN;
         }
-        index++;
+
+        i++;
     }
 
-    // parse the first number
-    if (isNumeric(splitInput[index])) {
-        tokens.push(+splitInput[index]);
-        seek();
-    } else if (isNumeric(splitInput[index] + splitInput[index + 1])) {
-        tokens.push(+(splitInput[index] + splitInput[index + 1]));
-        seek();
-        seek();
-    } else {
-        return;
+    if (
+        !tokens.length ||
+        !isNumeric(tokens[0]) ||
+        !isNumeric(tokens[tokens.length - 1])
+    ) {
+        return NaN;
     }
-    while(!isAtEnd) {
-        // a number must be followed by an operator if input isn't at end
-        tokens.push(splitInput[index]);
-        if (seek()) break;
-        // an operator must be follow by a number if input isn't at end
-        if (isNumeric(splitInput[index])) {
-            tokens.push(+splitInput[index]);
-            if (seek()) break;
-        } else if (isNumeric(splitInput[index] + splitInput[index + 1])) {
-            tokens.push(+(splitInput[index] + splitInput[index + 1]));
-            if (seek()) break;
-            if (seek()) break;
-        }
-    }
+
     return tokens;
 }
 
+function isOperator(value) {
+    return ['/', '*', '+', '-'].includes(value);
+}
+
 function isNumeric(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function isMinusSign(value) {
+    return value === '-';
 }
 
 function evaluate(tokens) {
