@@ -69,6 +69,7 @@
     justify-content: flex-end;
     align-items: flex-end;
     padding-bottom: 8px;
+    overflow: hidden;
 }
 
 #input {
@@ -143,4 +144,21 @@
 #calculate-btn {
     border-color: var(--brown);
     color: var(--brown);
+}
+
+.number:hover,
+.operator:hover,
+.utility:hover,
+#calculate-btn:hover {
+    background-color: var(--gray);
+    transition: 0.4s;
+}
+
+.number:active,
+.operator:active,
+.utility:active,
+#calculate-btn:active {
+    background-color: var(--white);
+    scale: 95%;
+    transition: 0.1s;
 }
