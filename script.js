@@ -66,6 +66,8 @@ function parse(input) {
         tokens.push(+(splitInput[index] + splitInput[index + 1]));
         seek();
         seek();
+    } else {
+        return;
     }
     while(!isAtEnd) {
         // a number must be followed by an operator if input isn't at end
