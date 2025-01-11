@@ -102,24 +102,28 @@ function isMinusSign(value) {
 }
 
 function evaluate(tokens) {
-    // deal with multiplication and division
-    while (tokens.includes('*') || tokens.includes('/')) {
-        const index = tokens.findIndex(item => item === '*' || item === '/');
-        if (tokens[index] === '*') {
-            tokens.splice(index - 1, 3, tokens[index - 1] * tokens[index + 1]);
-        } else {
-            tokens.splice(index - 1, 3, tokens[index - 1] / tokens[index + 1]);
-        }
+    const operate = {
+        '/': (a, b) => a / b,
+        '*': (a, b) => a * b,
+        '+': (a, b) => a + b,
+        '-': (a, b) => a - b,
     }
 
-    // deal with addition and substraction
+    const evalExpr = (index) => {
+        const numLeft = tokens[index - 1];
+        const operator = tokens[index];
+        const numRight = tokens[index + 1];
+        tokens.splice(index - 1, 3, operate[operator](numLeft, numRight));
+    };
+
+    while (tokens.includes('*') || tokens.includes('/')) {
+        const index = tokens.findIndex(item => item === '*' || item === '/');
+        evalExpr(index);
+    }
+
     while (tokens.includes('+') || tokens.includes('-')) {
         const index = tokens.findIndex(item => item === '+' || item === '-');
-        if (tokens[index] === '+') {
-            tokens.splice(index - 1, 3, tokens[index - 1] + tokens[index + 1]);
-        } else {
-            tokens.splice(index - 1, 3, tokens[index - 1] - tokens[index + 1]);
-        }
+        evalExpr(index);
     }
     return tokens[0];
 }
