@@ -41,10 +41,7 @@ calculateBtn.addEventListener('click', () => {
 });
 
 function parse(input) {
-    let splitInput = input.split(' ');
-    // empty char is added when two spaces chars are split
-    // there are two spaces between operator and negative number
-    splitInput = splitInput.filter(item => item !== '');
+    const splitInput = input.split(/\s+/);
 
     const tokens = [];
     let index = 0;
